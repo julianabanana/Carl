@@ -1,0 +1,11 @@
+# Credenciales del ESP32 — nunca subir al repositorio
+cupcake/config.h
+
+# Node
+node_modules/
+WebServ/frontend/dist/
+WebServ/backend/.env
+
+# Sistema
+.DS_Store
+Thumbs.db
