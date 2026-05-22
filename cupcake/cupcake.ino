@@ -12,6 +12,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <Adafruit_PWMServoDriver.h>
+#include "DFRobotDFPlayerMini.h"
 #include "config.h"
 
 // ==========================================
@@ -52,11 +53,35 @@ const char* TOPIC_HEARTBEAT     = "cupcake/sensors/heartbeat";
 const unsigned long HEARTBEAT_INTERVAL = 5000;
 unsigned long lastHeartbeat = 0;
 
+//WEA PARLANTE 
+HardwareSerial mySoftwareSerial(2); 
+DFRobotDFPlayerMini myDFPlayer;
+
 // ==========================================
 // SETUP
 // ==========================================
 void setup() {
   Serial.begin(115200);
+
+  mySoftwareSerial.begin(9600, SERIAL_8N1, 16, 17);
+
+  Serial.println();
+  Serial.println(F("Iniciando DFPlayer..."));
+
+  if (!myDFPlayer.begin(mySoftwareSerial)) {
+    Serial.println(F("Error: No se pudo comunicar con el DFPlayer Mini."));
+    Serial.println(F("1. Revisa las conexiones físicas (RX/TX invertidos?)."));
+    Serial.println(F("2. ¿Insertaste la tarjeta MicroSD?"));
+    while(true); // Detener el programa si hay error
+  }
+  Serial.println(F("DFPlayer Mini en línea de forma exitosa."));
+  
+  // Configurar volumen (Rango de 0 a 30)
+  myDFPlayer.volume(15);  // Un volumen de 15 está bien para empezar sin saturar
+  
+  // Reproducir el primer archivo de audio (0001.mp3)
+  Serial.println(F("Reproduciendo el archivo 0001.mp3..."));
+  myDFPlayer.play(1);
 
   pwm.begin();
   pwm.setPWMFreq(50);
