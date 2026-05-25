@@ -4,9 +4,11 @@ import mqtt from 'mqtt';
 const BROKER_WS_URL = 'ws://localhost:9001';
 
 const TOPICS = {
-  STATE:     'cupcake/state',
-  HEARTBEAT: 'cupcake/sensors/heartbeat',
-  OVERRIDE:  'cupcake/override',
+  STATE:         'cupcake/state',
+  HEARTBEAT:     'cupcake/sensors/heartbeat',
+  CMD_ANIMATION: 'cupcake/commands/animation',
+  CMD_SERVO:     'cupcake/commands/servo',
+  OVERRIDE:      'cupcake/override',           // solo para cambios de estado de la mascota
 };
 
 export function useMqtt() {
@@ -18,6 +20,7 @@ export function useMqtt() {
   useEffect(() => {
     const client = mqtt.connect(BROKER_WS_URL, {
       clientId: `cupcake-ui-${Date.now()}`,
+      protocolVersion: 4,
       reconnectPeriod: 3000,
     });
     clientRef.current = client;
@@ -46,12 +49,19 @@ export function useMqtt() {
     };
   }, []);
 
-  const sendOverride = useCallback((type, payload) => {
-    clientRef.current?.publish(
-      TOPICS.OVERRIDE,
-      JSON.stringify({ type, ...payload })
-    );
+  // Control manual directo → ESP32 (sin pasar por el backend)
+  const sendAnimation = useCallback((id) => {
+    clientRef.current?.publish(TOPICS.CMD_ANIMATION, JSON.stringify({ id }));
   }, []);
 
-  return { brokerConnected, cupcakeState, esp32Status, sendOverride };
+  const sendServo = useCallback((channel, angle) => {
+    clientRef.current?.publish(TOPICS.CMD_SERVO, JSON.stringify({ channel, angle }));
+  }, []);
+
+  // Override de estado de la mascota → backend (para que gestione la máquina de estados)
+  const sendStateOverride = useCallback((state) => {
+    clientRef.current?.publish(TOPICS.OVERRIDE, JSON.stringify({ type: 'state', state }));
+  }, []);
+
+  return { brokerConnected, cupcakeState, esp32Status, sendAnimation, sendServo, sendStateOverride };
 }

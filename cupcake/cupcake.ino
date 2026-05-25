@@ -77,7 +77,7 @@ void setup() {
   Serial.println(F("DFPlayer Mini en línea de forma exitosa."));
   
   // Configurar volumen (Rango de 0 a 30)
-  myDFPlayer.volume(15);  // Un volumen de 15 está bien para empezar sin saturar
+  myDFPlayer.volume(30);  // Un volumen de 15 está bien para empezar sin saturar
   
   // Reproducir el primer archivo de audio (0001.mp3)
   Serial.println(F("Reproduciendo el archivo 0001.mp3..."));

@@ -17,7 +17,7 @@ const INITIAL_SERVOS = [
 ];
 
 export default function App() {
-  const { brokerConnected, cupcakeState, esp32Status, sendOverride } = useMqtt();
+  const { brokerConnected, cupcakeState, esp32Status, sendAnimation, sendServo, sendStateOverride } = useMqtt();
   const [servos, setServos] = useState(INITIAL_SERVOS);
   const [activeAnimation, setActiveAnimation] = useState(null);
 
@@ -25,17 +25,17 @@ export default function App() {
     setServos((prev) =>
       prev.map((s) => (s.channel === channel ? { ...s, value } : s))
     );
-    sendOverride('servo', { channel, angle: value });
+    sendServo(channel, value);
   }
 
   function handleAnimate(animId) {
     setActiveAnimation(animId);
-    sendOverride('animation', { id: animId });
+    sendAnimation(animId);
     setTimeout(() => setActiveAnimation(null), 1500);
   }
 
   function handleOverrideState(state) {
-    sendOverride('state', { state });
+    sendStateOverride(state);
   }
 
   const esp32Connected = Boolean(esp32Status);
