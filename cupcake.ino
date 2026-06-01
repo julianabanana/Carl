@@ -55,8 +55,8 @@ const int POS_PARP_ABIERTO  = 70;
 const int POS_PARP_CERRADO  = 145;
 const int POS_PARP_SOSPECHA = 120;
 const int POS_PARP_SORPRESA = 55;
-const int POS_BOCA_ABIERTA  = 120;
-const int POS_BOCA_CERRADA  = 70;
+const int POS_BOCA_ABIERTA  = 110;
+const int POS_BOCA_CERRADA  = 90;
 
 // Rangos de movimiento ojos
 const int OJO_X_MIN = 40,  OJO_X_MAX = 140, OJO_X_CEN = 90;
@@ -69,8 +69,8 @@ const int OJO_DER_Y_MIN = 55, OJO_DER_Y_MAX = 105, OJO_DER_Y_CEN = 105;
 #define VEL_RAPIDA  8
 
 // ─── WiFi ────────────────────────────────────────────────────────────────────
-const char* SSID_AP = "Carl-Bot";
-const char* PASS_AP = "carl1234";
+const char* SSID_AP = "Cupcake-Bot";
+const char* PASS_AP = "mrcupcake1234";
 
 // ─── NTP ─────────────────────────────────────────────────────────────────────
 const char* NTP_SERVER = "pool.ntp.org";
@@ -262,7 +262,7 @@ void funcInvestigar() {
     funcEnCurso = true;
 
     // Ojos naranja, sospecha, audio
-    ledColor(strip.Color(255, 80, 0));
+    ledColor(strip.Color(255, 50, 0));
     int c[]={PARP_SUP,PARP_INF}, s[]={POS_PARP_SOSPECHA,POS_PARP_SOSPECHA};
     moverSimultaneo(c,s,2,VEL_MEDIA);
     //player.play(3);   // 003.mp3
@@ -369,7 +369,7 @@ String formatearTiempo(long s) {
 const char HTML_PAGE[] PROGMEM = R"rawliteral(
 <!DOCTYPE html><html lang="es"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CARL BOT</title>
+<title>Mr. Cupcake's controls</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap');
 :root{
@@ -419,7 +419,7 @@ footer{text-align:center;font-size:6px;color:#333;padding:24px;letter-spacing:2p
 </style></head><body>
 
 <header>
-  <h1>★ C A R L ★</h1>
+  <h1>★ M R.  C U P C A K E ★</h1>
   <p>MASCOTA ROBOT v1.0 // PANEL DE CONTROL</p>
 </header>
 
@@ -454,7 +454,7 @@ footer{text-align:center;font-size:6px;color:#333;padding:24px;letter-spacing:2p
 </div>
 
 <div class="toast" id="toast">OK</div>
-<footer>CARL BOT // ESP32 // 8-BIT EDITION</footer>
+<footer>MR. CUPCAKE BOT // 2026-I // TECNOLOGIA DIGITAL</footer>
 
 <script>
 function cmd(accion){
@@ -577,7 +577,7 @@ void setup() {
     ledColor(strip.Color(0, 200, 255));
     delay(400);
     ledApagar();
-    Serial.println("Carl listo!");
+    Serial.println("Mr. Cupcake listo!");
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -610,5 +610,4 @@ void loop() {
 
     delay(10);  // Yield para el stack WiFi
 }
-
 
